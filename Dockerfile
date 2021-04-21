@@ -1,19 +1,13 @@
-FROM python:3.7-slim
-# install the notebook package
-RUN pip install --no-cache --upgrade pip && \
-    pip install --no-cache notebook
-# create user with a home directory
-ARG NB_USER
-ARG NB_UID
-ENV USER ${NB_USER}
-ENV HOME /home/${NB_USER}
-RUN adduser --disabled-password \
-    --gecos "Default user" \
-    --uid ${NB_UID} \
-    ${NB_USER}
-RUN apt-get update && \
-      apt-get -y install sudo
-RUN adduser ${NB_USER} sudo && \
-      echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-WORKDIR ${HOME}
-USER ${USER}
+ FROM node:12-alpine
+ RUN wait 12000
+ ENV HTTP_PROXY="http://proxy-gdpshs-p.we1.azure.aztec.cloud.allianz:80"
+ ENV HTTPS_PROXY="http://proxy-gdpshs-p.we1.azure.aztec.cloud.allianz:80"
+ ENV http_proxy="http://proxy-gdpshs-p.we1.azure.aztec.cloud.allianz:80"
+ ENV https_proxy="http://proxy-gdpshs-p.we1.azure.aztec.cloud.allianz:80"
+ ENV NO_PROXY="10.100.0.0/16,172.20.0.0/16,localhost,127.0.0.1, .internal, .local, .ec1.aws.aztec.cloud.allianz, 169.254.169.254,logs.eu-central-1.amazonaws.com,ec2.eu-central-1.amazonaws.com,ecr.eu-central-1.amazonaws.com,sts.eu-central-1.amazonaws.com,elasticloadbalancing.eu-central-1.amazonaws.com,autoscaling.eu-central-1.amazonaws.com, s3.eu-central-1.amazonaws.com, .gitlab.gda.allianz, .gda.allianz, .svc"
+ ENV no_proxy="10.100.0.0/16,172.20.0.0/16,localhost,127.0.0.1, .internal, .local, .ec1.aws.aztec.cloud.allianz, 169.254.169.254,logs.eu-central-1.amazonaws.com,ec2.eu-central-1.amazonaws.com,ecr.eu-central-1.amazonaws.com,sts.eu-central-1.amazonaws.com,elasticloadbalancing.eu-central-1.amazonaws.com,autoscaling.eu-central-1.amazonaws.com, s3.eu-central-1.amazonaws.com, .gitlab.gda.allianz, .gda.allianz, .svc"
+ RUN apk add --no-cache python g++ make
+ WORKDIR /app
+ COPY . .
+ RUN yarn install --production
+ CMD ["node", "src/index.js"]
