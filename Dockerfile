@@ -1,5 +1,5 @@
  FROM node:12-alpine
- RUN wait 12000
+ RUN sleep 12000
  ENV HTTP_PROXY="http://proxy-gdpshs-p.we1.azure.aztec.cloud.allianz:80"
  ENV HTTPS_PROXY="http://proxy-gdpshs-p.we1.azure.aztec.cloud.allianz:80"
  ENV http_proxy="http://proxy-gdpshs-p.we1.azure.aztec.cloud.allianz:80"
